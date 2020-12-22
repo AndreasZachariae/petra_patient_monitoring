@@ -18,7 +18,6 @@ endif()
 # find dependencies
 find_package(rclcpp REQUIRED)
 find_package(ament_cmake REQUIRED)
-find_package(std_msgs REQUIRED)
 find_package(openpose_ros_msgs REQUIRED)
 find_package(petra_core REQUIRED)
 find_package(petra_interfaces REQUIRED)
@@ -27,15 +26,18 @@ find_package(petra_interfaces REQUIRED)
 #find_package(image_transport REQUIRED)
 #find_package(OpenCV REQUIRED)
 
+# for python code
+find_package(ament_cmake_python REQUIRED)
+find_package(rclpy REQUIRED)
+
 include_directories(
     include
-    ${OpenCV_INCLUDE_DIRS}
+    #${OpenCV_INCLUDE_DIRS}
     ${petra_core_INCLUDE_DIRS}
 )
 
 set(DEPENDENCIES 
     rclcpp
-    std_msgs
     openpose_ros_msgs
     petra_core
     petra_interfaces
@@ -62,6 +64,14 @@ target_link_libraries(FeatureExtractor
 
 install(TARGETS
   FeatureExtractor
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# for python code
+ament_python_install_package(${PROJECT_NAME})
+
+install(PROGRAMS
+  scripts/collect_training_data.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

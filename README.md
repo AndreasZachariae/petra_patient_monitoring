@@ -17,6 +17,29 @@
 
 
 
+## Feature Extractor
+
+To make skript executable:
+
+`chmod +x collect_training_data.py`
+
+This allows:
+
+`python3 path/to/collect_training_data.py`
+
+For modify and re-run without compiling:
+
+`colcon build --symlink-install --packages-select petra_patient_monitoring`
+
+### Run:
+
+`ros2 run petra_patient_monitoring FeatureExtractor`
+
+`ros2 run petra_patient_monitoring collect_training_data.py`
+
+
+
+
 ## OpenPose 
 
 ### Installation:
@@ -70,11 +93,6 @@ openpose_flags.cpp
 - face = false
 - hand = false
 - display = 2
-
-
-
-## FeatureExtractor
-`ros2 run petra_patient_monitoring FeatureExtractor`
 
 
 

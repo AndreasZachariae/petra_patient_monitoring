@@ -65,5 +65,11 @@
         "set": "cpp",
         "string": "cpp",
         "string_view": "cpp"
-    }
+    },
+    "python.pythonPath": "/usr/bin/python3",
+    "python.autoComplete.extraPaths": [
+        "/opt/ros/dashing/lib/python3.6/site-packages",
+        "${workspaceFolder}/../../install/petra_interfaces/include"
+    ],
+    "python.languageServer": "Jedi"
 }
