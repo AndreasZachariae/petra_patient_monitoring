@@ -13,9 +13,10 @@ import os
 
 image_topic = 'image'
 data_path = "~/petra_ws/src/petra_patient_monitoring/data/features.csv"
-image_path = '~/petra_ws/src/petra_patient_monitoring/data/images'
-header = ["Image", "Frame", "Class", "Presence", "TorsoBoundingBoxRatio", "FrHeadGroundDistanceame", "BufferedHeadGroundDistance",
+image_path = '//home//andreas//petra_ws//src//petra_patient_monitoring//data//images'
+header = ["Image", "Video", "Frame", "Class", "Presence", "TorsoBoundingBoxRatio", "HeadGroundDistance", "BufferedHeadGroundDistance",
           "HeadVelocity", "BufferedHeadVelocity", "TorsoHeight", "BufferedTorsoHeight", "Centroid", "BufferedCentroid"]
+video_id = 11
 
 bridge = CvBridge()
 
@@ -43,6 +44,7 @@ class CollectTrainingData(Node):
         entry = []
         time = (msg.image_header.stamp.sec * 1000000000) + msg.image_header.stamp.nanosec
         entry.append(time)  # Image
+        entry.append(video_id)  # Video
 
         self.frame_id += 1
         entry.append(self.frame_id)  # Frame
@@ -71,7 +73,7 @@ class CollectTrainingData(Node):
         else:
             time = (msg.header.stamp.sec * 1000000000) + msg.header.stamp.nanosec
 
-            path = image_path + '/Image'+str(time) + '.jpeg'
+            path = image_path + '//video' + str(video_id) + '//Image' + str(time) + '.jpeg'
 
             cv2.imwrite(path, cv2_img)
 
