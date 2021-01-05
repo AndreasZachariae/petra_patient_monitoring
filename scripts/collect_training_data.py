@@ -33,9 +33,8 @@ class CollectTrainingData(Node):
 
     def __init__(self):
         super().__init__('CollectTrainingData')
-        self.patient_features_subscriber = self.create_subscription(PatientFeatures, 'PatientFeatures', self.patient_features_callback, 10)
-        self.image_subscriber = self.create_subscription(Image, image_topic, self.image_callback, 10)
-        # self.subscription  # prevent unused variable warning
+        self.patient_features_subscriber = self.create_subscription(PatientFeatures, 'PatientFeatures', self.patient_features_callback, 50)
+        self.image_subscriber = self.create_subscription(Image, image_topic, self.image_callback, 50)
 
         self.frame_id = 0
 
