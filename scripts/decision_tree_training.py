@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import random
 import json
 
@@ -16,7 +15,7 @@ first_feature_column = 5
 number_of_features = 10
 column_of_label = 4
 allow_same_feature_again = False
-##########################################################################################################################
+#########################################################################################################################
 
 # Speichere Daten in Array, wobei jede Zeile eine Liste beinhaltet in Form des headers
 features = list(range(first_feature_column, first_feature_column + number_of_features))  # [5,6,7,8,9,10,11,12,13,14] len=10
@@ -273,10 +272,10 @@ if __name__ == '__main__':
 
     evaluate(descision_tree)
 
-    #json_tree = json.dumps(descision_tree, default=serialize, indent=2)
+    #json_tree = json.dumps(descision_tree, default=serialize, indent=4)
 
     with open('tree.json', 'w') as file:
-        json.dump(descision_tree, file, default=serialize, indent=2)
+        json.dump(descision_tree, file, default=serialize, indent=4)
 
     print("")
     print("Teste das Bild " + str(data[6]))
