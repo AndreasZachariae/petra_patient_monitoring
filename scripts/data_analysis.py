@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import numpy as np
 import pandas as pd
 import csv
@@ -14,8 +15,8 @@ print("number of falling poses: ", df_fall.shape[0])
 
 
 def create_sublot(axis, x_label, y_label, x_plot, y_plot):
-    axis[x_plot, y_plot].scatter(df_walk[x_label], df_walk[y_label], s=9, color='blue')
-    axis[x_plot, y_plot].scatter(df_fall[x_label], df_fall[y_label], s=9, color='red')
+    axis[x_plot, y_plot].scatter(df_walk[x_label], df_walk[y_label], s=5, color='blue')
+    axis[x_plot, y_plot].scatter(df_fall[x_label], df_fall[y_label], s=5, color='red')
     #axis[x_plot, y_plot].set_title(x_label + ' vs. ' + y_label)
     axis[x_plot, y_plot].set_xlabel(x_label)
     axis[x_plot, y_plot].set_ylabel(y_label)
