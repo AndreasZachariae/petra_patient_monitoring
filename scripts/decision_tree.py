@@ -1,8 +1,9 @@
+#!/usr/bin/env python3
 import numpy as np
 import pandas as pd
-import csv
 import matplotlib.pyplot as plt
 import random
+import json
 
 ############################################# Konstanten ################################################################
 path = "~/petra_ws/src/petra_patient_monitoring/data/features_version_01.csv"
@@ -148,18 +149,17 @@ def find_best_split(rows, features):
 # Blatt am Ende des Baums
 class Leaf:
     def __init__(self, rows):
-        self.elements = count_per_label(rows)
+        self.counts = count_per_label(rows)
         self.rows = rows
-
-    def predict(self):
-        prediction = ["undecidable", 0]
+        self.prediction = ["undecidable", 0]
         sum = 0
-        for key, value in self.elements.items():
+
+        for key, value in self.counts.items():
             sum += value
-            if value > prediction[1]:
-                prediction = [key, value]
-        prediction[1] = prediction[1] / float(sum)
-        return prediction
+            if value > self.prediction[1]:
+                self.prediction = [key, value]
+
+        self.prediction[1] = round(self.prediction[1] / float(sum), 3)
 
 
 # Entscheidungsknoten
@@ -208,7 +208,7 @@ def print_tree(node, spacing=""):
 
     # Blatt (Ende des Baums, d.h. Klassifikation)
     if isinstance(node, Leaf):
-        print(spacing + "Elements " + str(node.elements) + " Prediction " + str(round(node.predict()[1]*100)) + "%")
+        print(spacing + "Counts per class " + str(node.counts) + " Prediction " + str(node.prediction))
         return
 
     # Entscheidungskriterium
@@ -228,7 +228,7 @@ def classify(row, node):
 
     # Klassifikation, wenn an Blatt angekommen
     if isinstance(node, Leaf):
-        return node.predict()
+        return node.prediction
 
     # Entscheidung, welcher Ast des Baums weiterverfolgt wird (anhand des Entscheidungskriteriums)
     if descision(row, node.feature, node.value):
@@ -248,6 +248,20 @@ def evaluate(tree):
     print("Evaluation: " + str(round(correct/len(testing_data) * 100)) + "% (" + str(correct) + "/" + str(len(testing_data)) + ") correct predicted")
 
 
+def serialize(obj):
+    if isinstance(obj, Node):
+        return {"feature": obj.feature,
+                "value": obj.value,
+                "gain": obj.gain,
+                "true_branch": serialize(obj.true_branch),
+                "false_branch": serialize(obj.false_branch)}
+
+    if isinstance(obj, Leaf):
+        return [str(obj.prediction[0]), obj.prediction[1]]
+
+    return "unknown obj"
+
+
 # main-Funktion
 if __name__ == '__main__':
 
@@ -258,6 +272,11 @@ if __name__ == '__main__':
     print_tree(descision_tree)
 
     evaluate(descision_tree)
+
+    #json_tree = json.dumps(descision_tree, default=serialize, indent=2)
+
+    with open('tree.json', 'w') as file:
+        json.dump(descision_tree, file, default=serialize, indent=2)
 
     print("")
     print("Teste das Bild " + str(data[6]))
