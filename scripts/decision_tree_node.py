@@ -4,8 +4,11 @@ import pandas as pd
 import json
 
 import rclpy
-#from rclpy.node import Node
-#from petra_interfaces.msg import PatientFeatures
+from rclpy.node import Node
+from petra_interfaces.msg import PatientFeatures
+
+with open('data/decision_tree.json') as json_file:
+    tree_dict = json.load(json_file)
 
 
 class Leaf:
@@ -14,7 +17,7 @@ class Leaf:
 
 
 # Entscheidungsknoten
-class Node:
+class TreeNode:
     def __init__(self, feature, value, gain, true_branch, false_branch):
         self.feature = feature
         self.value = value
@@ -25,8 +28,8 @@ class Node:
 
 def build_tree_from_dict(tree_dict):
     if isinstance(tree_dict, dict):
-        node = Node(tree_dict["feature"], tree_dict["value"], tree_dict["gain"],
-                    build_tree_from_dict(tree_dict["true_branch"]), build_tree_from_dict(tree_dict["false_branch"]))
+        node = TreeNode(tree_dict["feature"], tree_dict["value"], tree_dict["gain"],
+                        build_tree_from_dict(tree_dict["true_branch"]), build_tree_from_dict(tree_dict["false_branch"]))
         return node
 
     if isinstance(tree_dict, list):
@@ -34,6 +37,10 @@ def build_tree_from_dict(tree_dict):
         return leaf
 
     return "unknown json tree structure"
+
+
+# Decision tree for classification
+decision_tree = build_tree_from_dict(tree_dict)
 
 
 def classify(row, node):
@@ -47,16 +54,54 @@ def classify(row, node):
         return classify(row, node.false_branch)
 
 
-def main():
-    with open('data/decision_tree.json') as json_file:
-        tree_dict = json.load(json_file)
+class DecisionTree(Node):
 
-    decision_tree = build_tree_from_dict(tree_dict)
+    def __init__(self):
+        super().__init__('DecisionTree')
+        self.patient_features_subscriber = self.create_subscription(PatientFeatures, 'PatientFeatures', self.patient_features_callback, 50)
 
-    row = [153, 1608737515746535562, 4, 11, 0, 1.0, 0.21093853584252087, 0.6486805934501659, 0.6050805449485779,
-           3.290157837909646e-05, -0.0007846101652830839, 0.6621974924660182, 0.6183574795722961, 0.44528281688690186, 0.4118817746639252]
+        self.entry_id = 0
+        self.video_id = 11
+        self.frame_id = 0
 
-    print(classify(row, decision_tree))
+    def patient_features_callback(self, msg):
+
+        frame = [self.frame_id]
+        time = (msg.image_header.stamp.sec * 1000000000) + msg.image_header.stamp.nanosec
+        frame.append(time)  # Image
+        frame.append(self.video_id)  # Video
+
+        self.frame_id += 1
+        frame.append(self.frame_id)  # Frame
+        frame.append(-1)  # Class -1 = unclassified
+
+        frame.append(msg.presence)
+        frame.append(msg.torso_bounding_box_ratio)
+        frame.append(msg.head_ground_distance)
+        frame.append(msg.buffered_head_ground_distance)
+        frame.append(msg.head_y_velocity)
+        frame.append(msg.buffered_head_y_velocity)
+        frame.append(msg.torso_height)
+        frame.append(msg.buffered_torso_height)
+        frame.append(msg.centroid)
+        frame.append(msg.buffered_centroid)
+
+        prediction = classify(frame, decision_tree)
+
+        if prediction[0] == "0":  # walking
+            self.get_logger().info("walk")
+        elif prediction[0] == "1":  # falling
+            self.get_logger().info("falling")
+
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    node = DecisionTree()
+
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
 
 
 if __name__ == '__main__':
