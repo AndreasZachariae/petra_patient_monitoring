@@ -4,7 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # read features from .csv file
-data_path = "~/petra_ws/src/petra_patient_monitoring/data/features_version_01.csv"
+#data_path = "~/petra_ws/src/petra_patient_monitoring/data/features_version_01.csv"
+data_path = "data/features_version_01.csv"
 df = pd.read_csv(data_path, header=0)
 df_walk = df.loc[df.Class == 0]  # 0 = walking
 df_fall = df.loc[df.Class == 1]  # 1 = falling

@@ -67,12 +67,20 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# for python code
-ament_python_install_package(${PROJECT_NAME})
+install(FILES
+    data
+    DESTINATION lib/${PROJECT_NAME}
+)
 
 install(PROGRAMS
   scripts/collect_training_data.py
+  scripts/data_analysis.py
+  scripts/decision_tree_training.py
+  scripts/decision_tree_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
+
+# for python code
+ament_python_install_package(${PROJECT_NAME})
 
 ament_package()

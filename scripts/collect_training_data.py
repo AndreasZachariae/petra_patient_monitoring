@@ -12,8 +12,10 @@ from petra_interfaces.msg import PatientFeatures
 
 ############################################# Konstanten ################################################################
 image_topic = 'image'
-data_path = "~/petra_ws/src/petra_patient_monitoring/data/features.csv"
-image_path = '//home//andreas//petra_ws//src//petra_patient_monitoring//data//images'
+#data_path = "~/petra_ws/src/petra_patient_monitoring/data/features.csv"
+data_path = "data/features.csv"
+#image_path = '//home//andreas//petra_ws//src//petra_patient_monitoring//data//images'
+image_path = '//data//images'
 header = ["Image", "Video", "Frame", "Class", "Presence", "TorsoBoundingBoxRatio", "HeadGroundDistance", "BufferedHeadGroundDistance",
           "HeadVelocity", "BufferedHeadVelocity", "TorsoHeight", "BufferedTorsoHeight", "Centroid", "BufferedCentroid"]
 video_id = 11

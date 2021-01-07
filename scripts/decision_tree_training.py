@@ -5,7 +5,8 @@ import random
 import json
 
 ############################################# Konstanten ################################################################
-path = "~/petra_ws/src/petra_patient_monitoring/data/features_version_01.csv"
+#path = "~/petra_ws/src/petra_patient_monitoring/data/features_version_01.csv"
+path = "data/features_version_01.csv"
 purity_score = "entropy"  # Alternative: "gini"
 training_percentage = 0.8
 gain_threshold = 0  # Gain-Wert unter dem keine weiteren Äste gebildet werden
@@ -274,7 +275,7 @@ if __name__ == '__main__':
 
     #json_tree = json.dumps(descision_tree, default=serialize, indent=4)
 
-    with open('tree.json', 'w') as file:
+    with open('data/decision_tree.json', 'w') as file:
         json.dump(descision_tree, file, default=serialize, indent=4)
 
     print("")
