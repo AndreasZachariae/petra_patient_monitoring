@@ -1,0 +1,85 @@
+{
+    "feature": 6,
+    "value": 0.3402272985890962,
+    "gain": 0.4504079900237351,
+    "true_branch": {
+        "feature": 8,
+        "value": 0.5997689962387085,
+        "gain": 0.18688779004914485,
+        "true_branch": [
+            "1",
+            1.0
+        ],
+        "false_branch": {
+            "feature": 12,
+            "value": 0.7926850318908691,
+            "gain": 0.9456603046006401,
+            "true_branch": [
+                "0",
+                1.0
+            ],
+            "false_branch": [
+                "1",
+                1.0
+            ]
+        }
+    },
+    "false_branch": {
+        "feature": 10,
+        "value": 0.0032766356598585844,
+        "gain": 0.13561196400110492,
+        "true_branch": {
+            "feature": 9,
+            "value": 0.2401652336120605,
+            "gain": 0.27145781454802265,
+            "true_branch": {
+                "feature": 14,
+                "value": 0.4775630831718445,
+                "gain": 0.2935644431995964,
+                "true_branch": [
+                    "1",
+                    1.0
+                ],
+                "false_branch": {
+                    "feature": 13,
+                    "value": 0.6773213148117065,
+                    "gain": 1.0,
+                    "true_branch": [
+                        "0",
+                        1.0
+                    ],
+                    "false_branch": [
+                        "1",
+                        1.0
+                    ]
+                }
+            },
+            "false_branch": {
+                "feature": 7,
+                "value": 1.3380300140520671,
+                "gain": 0.1772899051991863,
+                "true_branch": [
+                    "1",
+                    1.0
+                ],
+                "false_branch": {
+                    "feature": 11,
+                    "value": 1.1136374852259034,
+                    "gain": 0.11134785288180327,
+                    "true_branch": [
+                        "0",
+                        0.8
+                    ],
+                    "false_branch": [
+                        "0",
+                        1.0
+                    ]
+                }
+            }
+        },
+        "false_branch": [
+            "0",
+            1.0
+        ]
+    }
+}
