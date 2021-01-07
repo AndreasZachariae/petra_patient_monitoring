@@ -67,7 +67,7 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-install(FILES
+install(DIRECTORY
     data
     DESTINATION lib/${PROJECT_NAME}
 )
