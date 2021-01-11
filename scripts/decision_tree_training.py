@@ -239,13 +239,28 @@ def classify(row, node):
 
 def evaluate(tree):
     correct = 0
+    # falling = 1 (positive class), walking = 0 (negative class)
+    tp = 0  # True positive
+    tn = 0  # true negative
+    fp = 0  # False positive
+    fn = 0  # False negative
 
     for row in testing_data:
         prediction = classify(row, tree)
         if row[column_of_label] == prediction[0]:
             correct += 1
+            if prediction[0] == 1:
+                tp += 1
+            elif prediction[0] == 0:
+                tn += 1
+        else:
+            if prediction[0] == 1:
+                fp += 1
+            elif prediction[0] == 0:
+                fn += 1
 
     print("Evaluation: " + str(round(correct/len(testing_data) * 100)) + "% (" + str(correct) + "/" + str(len(testing_data)) + ") correct predicted")
+    print("Confusion Matrix: (tp=" + str(tp) + ", fp=" + str(fp) + "), (fn=" + str(fn) + ", tn=" + str(tn) + ")")
 
 
 def serialize(obj):
